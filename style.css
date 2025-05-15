@@ -1,0 +1,145 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+      body {
+        margin: 0;
+        padding: 0;
+       
+        background-image: url('./backg.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+ 
+      }
+      header {
+      display: flex;
+justify-items: center;
+align-items: center;
+position: relative;
+color: white;
+font-size: 30px;
+.logo {
+    img{
+        width: 70px;
+        height: 70px;
+    }
+    h1{
+        font-size: 30px;
+        font-weight: bold;
+    }
+    margin: 20px;
+    display: flex;
+justify-items: center;
+align-items: center;
+justify-content: space-between;
+gap: 10%;
+
+      }
+    }
+
+    .navigation ul {
+      position: absolute;
+      left: 65%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10%;  
+        top: 35px;
+        font-size: large;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+   font-size: 60px;
+   color: white;
+   position: absolute;
+   top: 100px;
+   left: 300px;
+    }
+    
+#myInput {
+    position: absolute;
+    top: 340px;
+    left: 300px;
+   background-color: transparent;
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 3px solid #3a41b7;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    width: 700px;
+  }
+  input{color: white;}
+  #myUL {
+    position: absolute;
+    top: 600px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px; 
+    width: 100%;
+    justify-content: center; 
+}
+
+#myUL li {
+    flex: 1 1 calc(25% - 20px); 
+    max-width: calc(25% - 20px);
+    text-align: center; 
+}
+  
+  #myUL li a {
+    border-radius: 20px;
+    border: 1px solid #58319c;
+    margin-top: -1px; 
+    background-color: transparent;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    display: block
+  }
+  
+  #myUL li a:hover:not(.header) {
+    background-color: #6d1ad4;
+  }
+  
+.how-it-works {
+  position: absolute;
+  top: 350px;
+  left: 340px;
+  gap: 120px; 
+  text-align: center;
+  margin-top: 50px;
+}
+.how-it-works h3 {
+
+  font-size: 24px; 
+  margin-bottom: 20px;
+  color: #ffffff; 
+}
+
+.how-it-works-icons {
+  display: flex; 
+  justify-content: center; 
+  gap: 150px;
+  color: #ffffff;
+  text-align: center;
+  font-size: large;
+}
+
+.how-it-works-icons img {
+  width: 60px; 
+  height: 60px;
+}
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f0f0f0;
+}
+

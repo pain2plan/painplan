@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <link rel="stylesheet" href="reset.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <style>
+   html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    height: auto;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* Background image covering full page */
+body {
+    background-image: url('./backg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+}
+
+/* Header and logo */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 10px 20px;
+    font-size: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.logo img {
+    width: 50px;
+    height: 50px;
+}
+
+.logo h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Navigation */
+.navigation ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+}
+
+.navigation ul li {
+    margin: 0;
+}
+
+.navigation ul li a {
+    color: white;
+    text-decoration: none;
+}
+.navigation ul li a {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.navigation ul li a::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: -1;
+}
+
+.navigation ul li a:hover::after {
+    width: 120%;
+    height: 200%;
+}
+
+/* Hero Text */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3vw;
+    text-align: center;
+    line-height: 1.2;
+    margin-top: 35px;
+    padding: 0 20px;
+    word-break: break-word;
+}
+
+/* Search Input */
+#myInput {
+    margin: 40px auto 0;
+    background-color: transparent;
+    width: 700px;
+    max-width: 90%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 3px solid #3a41b7;
+    border-radius: 20px;
+    color: white;
+}
+
+input {
+    color: white;
+}
+
+/* Search Result List */
+#myUL {
+    list-style-type: none;
+    padding: 0;
+    margin: 40px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+#myUL li {
+    flex: 1 1 calc(25% - 20px);
+    max-width: calc(25% - 20px);
+    text-align: center;
+}
+
+#myUL li a {
+    border-radius: 20px;
+    border: 1px solid #58319c;
+    background-color: transparent;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+}
+
+#myUL li a:hover:not(.header) {
+    background-color: #6d1ad4;
+}
+
+/* How it works section */
+.how-it-works {
+    margin-top: 50px;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.how-it-works h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.how-it-works-icons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 50px;
+    font-size: large;
+}
+
+.how-it-works-icons img {
+    width: 60px;
+    height: 60px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        font-size: 7vw;
+    }
+
+    #myUL li {
+        flex: 1 1 calc(45% - 20px);
+        max-width: calc(45% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        font-size: 8vw;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .navigation ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #myUL li {
+        flex: 1 1 calc(90% - 20px);
+        max-width: calc(90% - 20px);
+    }
+
+    .how-it-works-icons {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        font-size: 10vw;
+    }
+
+    .logo h1 {
+        font-size: 20px;
+    }
+
+    .logo img {
+        width: 40px;
+        height: 40px;
+    }
+
+    #myInput {
+        font-size: 14px;
+        padding: 10px 16px 10px 36px;
+    }
+
+    .navigation ul {
+        font-size: 14px;
+    }
+}
+
+
+
+  </style>
+    <header>
+        <div class="logo">
+          <img src="./logo.png" alt="Logo" />
+          <h1>Pain2Plan</h1>
+        </div>
+        <nav class="navigation">
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./problemmap.html">World Problem</a></li>
+            <li><a href="./view.html">View Problem</a></li>
+            <li><a href="./submit.html">Submit Problem</a></li>
+            <li><a href="./login.html">LogIn</a></li>
+          </ul>
+        </nav>
+      </header>
+<main>
+    <div class="container">
+        <h2>Turning Pain <br> into Progress</h2>
+    </div>
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for problems..." title="Type in a name">
+    <div class="how-it-works">
+        <h3>How it works</h3>
+        <div class="how-it-works-icons">
+           <div> <img src="./notes.png" alt="Notes">submit a problem</div>
+           <div> <img src="./idea.png" alt="Idea">Get solution</div>
+            <div> <img src="./cleaning.png" alt="Cleaning">Share feedback</div>
+                <div> <img src="./laptop.png" alt="Laptop">Share fard</div>
+        </div>
+    </div>
+<ul id="myUL">
+  <li><a href="#">Technology</a></li>
+  <li><a href="#">Health</a></li>
+
+  <li><a href="#">Environment</a></li>
+  <li><a href="#">Buisiness</a></li>
+
+  <li><a href="#">Education</a></li>
+  <li><a href="#">Other</a></li>
+ 
+</ul>
+
+</body>
+<script src="./java.js"></script>
+</html>

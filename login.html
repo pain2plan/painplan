@@ -1,0 +1,393 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Pain2Plan</title>
+<link rel="stylesheet" href="./reset.css">
+  <style>
+     /* Base Reset */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100%;
+      color: #fff;
+    }
+
+    /* Background Video */
+    .background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    .logo h1 {
+      font-size: 26px;
+      margin: 0;
+    }
+
+    .navigation ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navigation a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .navigation a::before {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 2px solid #00f0ff;
+      border-radius: 50%;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .navigation a:hover {
+      color: #00f0ff;
+    }
+
+    .navigation a:hover::before {
+      opacity: 1;
+    }
+
+    /* Login Box */
+    .login-box {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px 30px;
+      border-radius: 20px;
+      max-width: 400px;
+      margin: 120px auto;
+      backdrop-filter: blur(12px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .input-box {
+      position: relative;
+      margin: 30px 0;
+    }
+
+    .input-box input,
+    .input-box select {
+      width: 100%;
+      padding: 12px 10px;
+      background: transparent;
+      border: 1px solid #fff;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .input-box label {
+      position: absolute;
+      top: -12px;
+      left: 10px;
+      background-color: rgba(0,0,0,0.6);
+      padding: 0 5px;
+      font-size: 14px;
+      color: #ff0000;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: #00f0ff;
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #00c2cc;
+    }
+
+    .remember-forget {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .remember-forget a {
+      color: #00f0ff;
+      text-decoration: none;
+    }
+
+    .remember-forget a:hover {
+      text-decoration: underline;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .register-link a {
+      color: #00f0ff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    .background-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 480px) {
+      header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 15px;
+      }
+
+      .logo {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .logo h1 {
+        font-size: 20px;
+        margin-top: 5px;
+      }
+
+      .navigation ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+        padding: 0;
+      }
+
+      .login-box {
+        width: 90%;
+        max-width: 350px;
+        margin: 20px auto;
+        padding: 20px;
+      }
+
+      .input-box input,
+      .input-box select {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .input-box label {
+        font-size: 12px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .register-link,
+      .remember-forget {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-wrapper">
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="bg.mp4" type="video/mp4" />
+    </video>
+
+    <header>
+      <div class="logo">
+        <img src="./logo.png" alt="Logo" />
+        <h1>Pain2Plan</h1>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./problemmap.html">World Problem</a></li>
+          <li><a href="./view.html">View Problem</a></li>
+          <li><a href="./submit.html">Submit Problem</a></li>
+          <li><a href="./login.html">LogIn</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section>
+      <div class="login-box">
+        <form id="login-form">
+          <h2>Login</h2>
+          <div class="input-box">
+            <input type="email" id="email" required />
+            <label>Email</label>
+          </div>
+          <div class="input-box">
+            <input type="password" id="password" required />
+            <label>Password</label>
+          </div>
+          <button type="submit">Login</button>
+          <div class="register-link">
+            <p>Don't have an account? <a href="./register.html">Register</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script>
+   const firebaseConfig = {
+    apiKey: "AIzaSyDHmgb22V9HRhjpFLZ5Z3-SHv5oZ2-ThzQ",
+    authDomain: "pain2plan-51c5b.firebaseapp.com",
+    projectId: "pain2plan-51c5b",
+    storageBucket: "pain2plan-51c5b.firebasestorage.app",
+    messagingSenderId: "247748724494",
+    appId: "1:247748724494:web:14c62855a5b3a1d096b95f",
+    measurementId: "G-5XJRVYBVEC"
+  };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    document.getElementById("login-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          alert("Logged in successfully!");
+          window.location.href = "./index.html";
+        })
+        .catch(error => {
+          alert("Login failed: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pain2Plan</title>
+  <style>
+   
+  </style>
+</head>
+
+<body>
+  <div class="background-wrapper">
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="bg.mp4" type="video/mp4" />
+    </video>
+
+    <header>
+      <div class="logo">
+        <img src="./logo.png" alt="Logo" />
+        <h1>Pain2Plan</h1>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./problemmap.html">World Problem</a></li>
+          <li><a href="./view.html">View Problem</a></li>
+          <li><a href="./submit.html">Submit Problem</a></li>
+          <li><a href="./login.html">LogIn</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section>
+      <div class="login-box">
+        <form id="login-form">
+          <h2>Login</h2>
+
+          <div class="input-box">
+            <input type="email" id="email" required />
+            <label>Email</label>
+          </div>
+
+          <div class="input-box">
+            <input type="password" id="password" required />
+            <label>Password</label>
+          </div>
+
+          <button type="submit">Login</button>
+
+          <div class="register-link">
+            <p>Don't have an account? <a href="./registar.html">Register</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html> -->

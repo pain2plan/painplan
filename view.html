@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Problems - Pain2Plan</title>
+     <style>
+      /* Font & Base Setup */
+      body, html {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        height: 100%;
+        color: #fff;
+        background: url('./back2.png') no-repeat center center fixed;
+        background-size: cover;
+      }
+
+      /* Wrapper for background and content */
+      .background-wrapper {
+        position: relative;
+        height: 100vh; /* Ensure the container takes full viewport height */
+      }
+
+      /* Header */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 60px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 50px;
+        margin-right: 10px;
+      }
+
+      .navigation ul {
+        list-style: none;
+        display: flex;
+        gap: 25px;
+      }
+
+      .navigation a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      .navigation a:hover {
+        color: #00f0ff;
+      }
+
+      /* Problem Display Section */
+      .problem-list {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 20px 30px;
+        border-radius: 20px;
+        max-width: 800px;
+        margin: 80px auto;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+      }
+
+      .problem-item {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+      }
+
+      .problem-item h3 {
+        margin: 0 0 10px;
+        color: #00f0ff;
+      }
+
+      .problem-item p {
+        margin: 0;
+        color: #fff;
+      }
+
+      /* Button */
+      button {
+        padding: 12px;
+        border: none;
+        background: #00f0ff;
+        color: #000;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background 0.3s ease;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background: #00c2cc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-wrapper">
+      <header>
+        <div class="logo">
+          <img src="./logo.png" alt="Logo" />
+          <h1>Pain2Plan</h1>
+        </div>
+        <nav class="navigation">
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./problemmap.html">World Problem</a></li>
+            <li><a href="./view.html">View Problem</a></li>
+            <li><a href="./submit.html">Submit Problem</a></li>
+            <li><a href="./login.html">LogIn</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <section>
+        <div class="problem-list" id="problem-list">
+          <h2>Submitted Problems</h2>
+          <!-- Problems will be dynamically loaded here -->
+        </div>
+      </section>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+    <script>
+      // Your Firebase config
+      const firebaseConfig = {
+        apiKey: "AIzaSyDHmgb22V9HRhjpFLZ5Z3-SHv5oZ2-ThzQ",
+        authDomain: "pain2plan-51c5b.firebaseapp.com",
+        projectId: "pain2plan-51c5b",
+        storageBucket: "pain2plan-51c5b.firebasestorage.app",
+        messagingSenderId: "247748724494",
+        appId: "1:247748724494:web:14c62855a5b3a1d096b95f",
+        measurementId: "G-5XJRVYBVEC"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
+
+      // Check if user is logged in
+      auth.onAuthStateChanged(user => {
+        if (!user) {
+          alert("You must be logged in to view problems.");
+          window.location.href = "./login.html"; // redirect if not logged in
+        } else {
+          loadProblems();
+        }
+      });
+
+      // Load problems from Firestore
+      function loadProblems() {
+        const problemList = document.getElementById('problem-list');
+        
+        db.collection('problems').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+          problemList.innerHTML = '<h2>Submitted Problems</h2>'; // reset list with header
+          if(snapshot.empty) {
+            problemList.innerHTML += '<p>No problems submitted yet.</p>';
+            return;
+          }
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            const problemDiv = document.createElement('div');
+            problemDiv.className = 'problem-item';
+            problemDiv.innerHTML = `
+              <h3>Role: ${escapeHtml(data.role)}</h3>
+              <p>${escapeHtml(data.problemText)}</p>
+              <small>${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : 'No timestamp'}</small>
+            `;
+            problemList.appendChild(problemDiv);
+          });
+        }, error => {
+          problemList.innerHTML += `<p>Error loading problems: ${error.message}</p>`;
+        });
+      }
+
+      // Simple HTML escaping function
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+    </script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Problems - Pain2Plan</title>
+   
+  </head>
+  <body>
+    <div class="background-wrapper">
+        <header>
+            <div class="logo">
+              <img src="./logo.png" alt="Logo" />
+              <h1>Pain2Plan</h1>
+            </div>
+            <nav class="navigation">
+              <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./problemmap.html">World Problem</a></li>
+                <li><a href="./view.html">View Problem</a></li>
+                <li><a href="./submit.html">Submit Problem</a></li>
+                <li><a href="./login.html">LogIn</a></li>
+              </ul>
+            </nav>
+          </header>
+
+      <section>
+        <div class="problem-list" id="problem-list">
+          <h2>Submitted Problems</h2>
+          <!-- Problems will be dynamically loaded here -->
+        </div>
+      </section>
+    </div>
+
+   
+  </body>
+</html> -->

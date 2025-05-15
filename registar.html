@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - Pain2Plan</title>
+<link rel="stylesheet" href="reset.css">
+  <style>
+    body, html {
+          margin: 0;
+          padding: 0;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          height: 100%;
+          color: #fff;
+        }
+        
+        /* Header */
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 60px;
+          position: relative;
+          z-index: 2;
+        }
+        
+        .logo {
+          display: flex;
+          align-items: center;
+        }
+        
+        .logo img {
+          height: 50px;
+          margin-right: 10px;
+        }
+        
+        .navigation ul {
+          list-style: none;
+          display: flex;
+          gap: 25px;
+        }
+        
+        .navigation a {
+          color: #fff;
+          text-decoration: none;
+          font-weight: bold;
+          transition: color 0.3s ease;
+        }
+        
+        .navigation a:hover {
+          color: #00f0ff;
+        }
+        
+        /* Video */
+        .background-video {
+          position: fixed;
+          top: 0;
+          left: 0;
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+          z-index: -1;
+        }
+        
+        /* Login/Register Box */
+        .login-box {
+          background: rgba(0, 0, 0, 0.6);
+          padding: 40px 30px;
+          border-radius: 20px;
+          max-width: 400px;
+          margin: 120px auto;
+          /* box-shadow: 0 0 30px rgba(0, 240, 255, 0.3); */
+          backdrop-filter: blur(12px);
+        }
+        
+        /* Inputs and Labels */
+        .input-box {
+          position: relative;
+          margin: 30px 0;
+        }
+        
+        .input-box input,
+        .input-box select {
+          width: 100%;
+          padding: 12px 10px;
+          background: transparent;
+          border: 1px solid #fff;
+          border-radius: 6px;
+          color: #3267a9;
+          font-size: 16px;
+          background-color: transparent;
+        }
+        
+        .input-box label {
+          position: absolute;
+          top: -12px;
+          left: 10px;
+          background-color: rgba(0,0,0,0.6);
+          padding: 0 5px;
+          font-size: 14px;
+          color: #00f0ff;
+        }
+        
+        /* Button */
+        button {
+          width: 100%;
+          padding: 12px;
+          border: none;
+          background: #00f0ff;
+          color: #000;
+          font-weight: bold;
+          font-size: 16px;
+          cursor: pointer;
+          border-radius: 8px;
+          transition: background 0.3s ease;
+          margin-top: 10px;
+        }
+        
+        button:hover {
+          background: #00c2cc;
+        }
+        
+        /* Extras */
+        .remember-forget {
+          display: flex;
+          justify-content: space-between;
+          font-size: 14px;
+          margin-top: 10px;
+        }
+        
+        .remember-forget a {
+          color: #00f0ff;
+          text-decoration: none;
+        }
+        
+        .remember-forget a:hover {
+          text-decoration: underline;
+        }
+        
+        .register-link {
+          text-align: center;
+          margin-top: 20px;
+          font-size: 14px;
+        }
+        
+        .register-link a {
+          color: #00f0ff;
+          font-weight: bold;
+          text-decoration: none;
+        }
+        
+        .register-link a:hover {
+          text-decoration: underline;
+        }
+  </style>
+</head>
+<body>
+  <div class="background-wrapper">
+    <video autoplay muted loop playsinline class="background-video">
+      <source src="bg.mp4" type="video/mp4" />
+    </video>
+
+    <header>
+      <div class="logo">
+        <img src="./logo.png" alt="Logo" />
+        <h1>Pain2Plan</h1>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./problemmap.html">World Problem</a></li>
+          <li><a href="./view.html">View Problem</a></li>
+          <li><a href="./submit.html">Submit Problem</a></li>
+          <li><a href="./login.html">LogIn</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section>
+      <div class="login-box">
+        <form id="register-form">
+          <h2>Register</h2>
+
+          <div class="input-box">
+            <label for="role">I am a:</label>
+            <select id="role" name="role" required>
+              <option value="" disabled selected>Select your role</option>
+              <option value="submitter">Problem Reporter</option>
+              <option value="startuper">Startup Founder</option>
+              <option value="business">Business Organization</option>
+            </select>
+          </div>
+
+          <div class="input-box">
+            <input type="text" id="name" required />
+            <label>Name</label>
+          </div>
+
+          <div class="input-box">
+            <input type="email" id="email" required />
+            <label>Email</label>
+          </div>
+
+          <div class="input-box">
+            <input type="password" id="password" required />
+            <label>Password</label>
+          </div>
+
+          <button type="submit">Register</button>
+
+          <div class="register-link">
+            <p>Already have an account? <a href="./login.html">Login</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+    apiKey: "AIzaSyDHmgb22V9HRhjpFLZ5Z3-SHv5oZ2-ThzQ",
+    authDomain: "pain2plan-51c5b.firebaseapp.com",
+    projectId: "pain2plan-51c5b",
+    storageBucket: "pain2plan-51c5b.firebasestorage.app",
+    messagingSenderId: "247748724494",
+    appId: "1:247748724494:web:14c62855a5b3a1d096b95f",
+    measurementId: "G-5XJRVYBVEC"
+  };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    document.getElementById("register-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const name = document.getElementById("name").value;
+      const role = document.getElementById("role").value;
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          return userCredential.user.updateProfile({
+            displayName: `${role}-${name}`
+          });
+        })
+        .then(() => {
+          alert("Account created successfully!");
+          window.location.href = "./login.html";
+        })
+        .catch(error => {
+          alert("Registration failed: " + error.message);
+        });
+    });
+  </script>
+</body>
+</html>
+
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="reset.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - Pain2Plan</title>
+  </head>
+  <body>
+    <style>/* Font & Base Setup */
+    
+        
+      </style>
+    <div class="background-wrapper">
+        <video autoplay muted loop playsinline class="background-video">
+          <source src="bg.mp4" type="video/mp4" />
+        </video>
+    
+        <header>
+            <div class="logo">
+              <img src="./logo.png" alt="Logo" />
+              <h1>Pain2Plan</h1>
+            </div>
+            <nav class="navigation">
+              <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./problemmap.html">World Problem</a></li>
+                <li><a href="./view.html">View Problem</a></li>
+                <li><a href="./submit.html">Submit Problem</a></li>
+                <li><a href="./login.html">LogIn</a></li>
+              </ul>
+            </nav>
+          </header>
+    
+        <section>
+          <div class="login-box">
+            <form id="register-form">
+              <h2>Register</h2>
+    
+              <div class="input-box">
+                <label for="role">I am a:</label>
+                <select id="role" name="role" required>
+                  <option value="" disabled selected>Select your role</option>
+                  <option value="submitter">Problem Reporter</option>
+                  <option value="startuper">Startup Founder</option>
+                  <option value="business">Business Organization</option>
+                </select>
+              </div>
+    
+              <div class="input-box">
+                <input type="text" id="name" required />
+                <label>Name</label>
+              </div>
+    
+              <div class="input-box">
+                <input type="email" id="email" required />
+                <label>Email</label>
+              </div>
+    
+              <div class="input-box">
+                <input type="password" id="password" required />
+                <label>Password</label>
+              </div>
+    
+              <button type="submit">Register</button>
+    
+              <div class="register-link">
+                <p>Already have an account? <a href="./login.html">Login</a></p>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    
+      <
+  </body>
+</html> -->
