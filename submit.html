@@ -1,301 +1,115 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Submit Problem - Pain2Plan</title>
-    <style>
-      /* Font & Base Setup */
-      body, html {
-        margin: 0;
-        padding: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        height: 100%;
-        color: #fff;
-        background: url('./back2.png') no-repeat center center fixed;
-        background-size: cover;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit Problem - Pain2Plan</title>
+  <style>
+    /* (CSS omitted for brevity — keep what you already have in the question) */
+  </style>
+</head>
+<body>
+  <div class="background-wrapper">
+    <header>
+      <div class="logo">
+        <img src="./logo.png" alt="Logo" />
+        <h1>Pain2Plan</h1>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./problemmap.html">World Problem</a></li>
+          <li><a href="./view.html">View Problem</a></li>
+          <li><a href="./submit.html">Submit Problem</a></li>
+          <li><a href="./login.html">LogIn</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section>
+      <div class="login-box">
+        <form id="submit-form">
+          <h2>Submit Problem</h2>
+
+          <div class="input-box">
+            <label for="role">I am a:</label>
+            <select id="role" name="role" required>
+              <option value="" disabled selected>Select your role</option>
+              <option value="submitter">Problem Reporter</option>
+              <option value="startuper">Startup Founder</option>
+              <option value="business">Business Organization</option>
+            </select>
+          </div>
+
+          <div class="input-box">
+            <label for="problem-text">Describe the Problem:</label>
+            <textarea id="problem-text" name="problem-text" rows="4" required></textarea>
+          </div>
+
+          <button type="submit">Submit Problem</button>
+
+          <div class="register-link">
+            <p>Already have an account? <a href="./login.html">Login</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHmgb22V9HRhjpFLZ5Z3-SHv5oZ2-ThzQ",
+      authDomain: "pain2plan-51c5b.firebaseapp.com",
+      projectId: "pain2plan-51c5b",
+      storageBucket: "pain2plan-51c5b.appspot.com",
+      messagingSenderId: "247748724494",
+      appId: "1:247748724494:web:14c62855a5b3a1d096b95f",
+      measurementId: "G-5XJRVYBVEC"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        alert("You must be logged in to submit a problem.");
+        window.location.href = "./login.html";
+      }
+    });
+
+    const submitForm = document.getElementById('submit-form');
+    submitForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const role = document.getElementById('role').value;
+      const problemText = document.getElementById('problem-text').value;
+      const user = auth.currentUser;
+
+      if (!user) {
+        alert("You are not logged in!");
+        return;
       }
 
-      /* Wrapper for background and content */
-      .background-wrapper {
-        position: relative;
-        height: 100vh; /* Ensure the container takes full viewport height */
-      }
-
-      /* Header */
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 60px;
-        position: relative;
-        z-index: 2;
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-      }
-
-      .logo img {
-        height: 50px;
-        margin-right: 10px;
-      }
-
-      .navigation ul {
-        list-style: none;
-        display: flex;
-        gap: 25px;
-      }
-
-      .navigation a {
-        color: #fff;
-        text-decoration: none;
-        font-weight: bold;
-        transition: color 0.3s ease;
-      }
-
-      .navigation a:hover {
-        color: #00f0ff;
-      }
-
-      /* Login/Register Box */
-      .login-box {
-        background: rgba(0, 0, 0, 0.6);
-        padding: 40px 30px;
-        border-radius: 20px;
-        max-width: 400px;
-        margin: 120px auto;
-        backdrop-filter: blur(12px);
-      }
-
-      /* Inputs and Labels */
-      .input-box {
-        position: relative;
-        margin: 30px 0;
-      }
-
-      .input-box input,
-      .input-box select,
-      .input-box textarea {
-        width: 100%;
-        padding: 12px 10px;
-        background: transparent;
-        border: 1px solid #fff;
-        border-radius: 6px;
-        color: #860f0f;
-        font-size: 16px;
-      }
-
-      .input-box label {
-        position: absolute;
-        top: -12px;
-        left: 10px;
-        background-color: rgba(0, 0, 0, 0.6);
-        padding: 0 6px;
-        font-size: 14px;
-        color: #9255dc;
-      }
-
-      /* Button */
-      button {
-        width: 100%;
-        padding: 12px;
-        border: none;
-        background: #00f0ff;
-        color: #000;
-        font-weight: bold;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 8px;
-        transition: background 0.3s ease;
-        margin-top: 10px;
-      }
-
-      button:hover {
-        background: #00c2cc;
-      }
-
-      /* Register Link */
-      .register-link {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 14px;
-      }
-
-      .register-link a {
-        color: #00f0ff;
-        font-weight: bold;
-        text-decoration: none;
-      }
-
-      .register-link a:hover {
-        text-decoration: underline;
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-        header {
-          flex-direction: column;
-          padding: 20px;
-        }
-
-        .navigation ul {
-          flex-direction: column;
-          gap: 15px;
-        }
-
-        .logo img {
-          height: 40px;
-        }
-
-        .login-box {
-          margin: 40px auto;
-          width: 90%;
-          padding: 30px;
-        }
-
-        .input-box input,
-        .input-box select,
-        .input-box textarea {
-          font-size: 14px;
-        }
-
-        button {
-          font-size: 14px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .login-box {
-          padding: 20px 15px;
-        }
-
-        .input-box input,
-        .input-box select,
-        .input-box textarea {
-          font-size: 12px;
-        }
-
-        button {
-          font-size: 14px;
-        }
-
-        .register-link {
-          font-size: 12px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="background-wrapper">
-      <header>
-        <div class="logo">
-          <img src="./logo.png" alt="Logo" />
-          <h1>Pain2Plan</h1>
-        </div>
-        <nav class="navigation">
-          <ul>
-            <li><a href="./index.html">Home</a></li>
-            <li><a href="./problemmap.html">World Problem</a></li>
-            <li><a href="./view.html">View Problem</a></li>
-            <li><a href="./submit.html">Submit Problem</a></li>
-            <li><a href="./login.html">LogIn</a></li>
-          </ul>
-        </nav>
-      </header>
-
-      <section>
-        <div class="login-box">
-          <form id="submit-form">
-            <h2>Submit Problem</h2>
-
-            <div class="input-box">
-              <label for="role">I am a:</label>
-              <select id="role" name="role" required>
-                <option value="" disabled selected>Select your role</option>
-                <option value="submitter">Problem Reporter</option>
-                <option value="startuper">Startup Founder</option>
-                <option value="business">Business Organization</option>
-              </select>
-            </div>
-
-            <div class="input-box">
-              <label for="problem-text">Describe the Problem:</label>
-              <textarea id="problem-text" name="problem-text" rows="4" required></textarea>
-            </div>
-
-            <button type="submit">Submit Problem</button>
-
-            <div class="register-link">
-              <p>Already have an account? <a href="./login.html">Login</a></p>
-            </div>
-          </form>
-        </div>
-      </section>
-    </div>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
-    <script>
-      // Your Firebase config
-      const firebaseConfig = {
-        apiKey: "AIzaSyDHmgb22V9HRhjpFLZ5Z3-SHv5oZ2-ThzQ",
-        authDomain: "pain2plan-51c5b.firebaseapp.com",
-        projectId: "pain2plan-51c5b",
-        storageBucket: "pain2plan-51c5b.firebasestorage.app",
-        messagingSenderId: "247748724494",
-        appId: "1:247748724494:web:14c62855a5b3a1d096b95f",
-        measurementId: "G-5XJRVYBVEC"
-      };
-
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
-      const db = firebase.firestore();
-
-      // Check if user is logged in
-      auth.onAuthStateChanged(user => {
-        if (!user) {
-          alert("You must be logged in to submit a problem.");
-          window.location.href = "./login.html"; // redirect if not logged in
-        }
+      db.collection('problems').add({
+        userId: user.uid,
+        role: role,
+        problemText: problemText,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(() => {
+        alert('Problem submitted successfully!');
+        submitForm.reset();
+      })
+      .catch(error => {
+        alert('Error submitting problem: ' + error.message);
       });
-
-      // Form submission
-      const submitForm = document.getElementById('submit-form');
-      submitForm.addEventListener('submit', e => {
-        e.preventDefault();
-
-        const role = document.getElementById('role').value;
-        const problemText = document.getElementById('problem-text').value;
-        const user = auth.currentUser;
-
-        if (!user) {
-          alert("You are not logged in!");
-          return;
-        }
-
-        // Save problem in Firestore
-        db.collection('problems').add({
-          userId: user.uid,
-          role: role,
-          problemText: problemText,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then(() => {
-          alert('Problem submitted successfully!');
-          submitForm.reset();
-        })
-        .catch(error => {
-          alert('Error submitting problem: ' + error.message);
-        });
-      });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
