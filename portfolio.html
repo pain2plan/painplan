@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Your Sent Problems</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('./backg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .problem {
+      background: white;
+      background-repeat: no-repeat;
+
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .problem h3 {
+      margin: 0 0 5px 0;
+    }
+
+    .problem p {
+      margin: 0 0 10px 0;
+    }
+
+    .problem small {
+      color: #666;
+    }
+
+    .login-message {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #444;
+    }
+    header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 60px;
+          position: relative;
+          z-index: 2;
+        }
+        
+        .logo {
+          display: flex;
+          align-items: center;
+        }
+        
+        .logo img {
+          height: 50px;
+          margin-right: 10px;
+        }
+        
+        .navigation ul {
+          list-style: none;
+          display: flex;
+          gap: 25px;
+        }
+        
+        .navigation a {
+          color: #fff;
+          text-decoration: none;
+          font-weight: bold;
+          transition: color 0.3s ease;
+        }
+        
+        .navigation a:hover {
+          color: #00f0ff;
+        }
+        
+  </style>
+</head>
+<body>
+  <header>
+      <div class="logo">
+        <img src="./logo.png" alt="Logo" />
+        <h1>Pain2Plan</h1>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./problemmap.html">World Problem</a></li>
+          <li><a href="./view.html">View Problem</a></li>
+          <li><a href="./submit.html">Submit Problem</a></li>
+          <li><a href="./login.html">LogIn</a></li>
+        </ul>
+      </nav>
+    </header>
+  <h1>Your Sent Problems</h1>
+  <div id="problem-list">Loading...</div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Replace with your Firebase config
+      const firebaseConfig = {
+    apiKey: "AIzaSyDHmgb22V9HRhjpFLZ5Z3-SHv5oZ2-ThzQ",
+    authDomain: "pain2plan-51c5b.firebaseapp.com",
+    projectId: "pain2plan-51c5b",
+    storageBucket: "pain2plan-51c5b.firebasestorage.app",
+    messagingSenderId: "247748724494",
+    appId: "1:247748724494:web:14c62855a5b3a1d096b95f",
+    measurementId: "G-5XJRVYBVEC"
+  };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // Wait for auth state
+    auth.onAuthStateChanged(user => {
+      const list = document.getElementById("problem-list");
+      if (user) {
+        db.collection("problems")
+          .where("userId", "==", user.uid)
+          .orderBy("timestamp", "desc")
+          .get()
+          .then(snapshot => {
+            if (snapshot.empty) {
+              list.innerHTML = "<p class='login-message'>No problems submitted yet.</p>";
+              return;
+            }
+
+            list.innerHTML = "";
+            snapshot.forEach(doc => {
+              const data = doc.data();
+              const date = data.timestamp?.toDate().toLocaleString() || "Unknown date";
+              list.innerHTML += `
+                <div class="problem">
+                  <h3>${data.title}</h3>
+                  <p>${data.description}</p>
+                  <small>Sent on ${date}</small>
+                </div>
+              `;
+            });
+          })
+          .catch(err => {
+            list.innerHTML = `<p class='login-message'>Error loading problems: ${err.message}</p>`;
+          });
+      } else {
+        list.innerHTML = `<p class='login-message'>Please <a href="login.html">log in</a> to view your problems.</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
